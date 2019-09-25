@@ -26,7 +26,8 @@ typedef struct Node{
 }LinkList;
 
 LinkList * creatList(int n);//创建一个长度为n的链表
-void add(LinkList *list ,int num);//添加节点
+void addFront(LinkList *list ,int num);//添加节点先插
+void addRear(LinkList *list ,int num);//添加节点后插
 int remote(LinkList *list ,int index);//移除下标,并返回内容
 void addIndex(LinkList *list ,int num,int index);//在特定下标添加节点
 LinkList * copyList(LinkList *list);//拷贝链表并返回一个链表

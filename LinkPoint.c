@@ -38,7 +38,31 @@ void print(LinkList *list){
     }
 }
 
+void addRear(LinkList *list ,int num) {
+    //后插,找到最后一个节点然后插上去
+    while(list->next != NULL){
+        list = list->next;
+    }
+    LinkList * node = (LinkList*)malloc(sizeof(LinkList));
+    node->next=NULL;
+    node->data=num;
+    list->next = node;
+}
+
+/**
+ * 将头节点的next赋值给新节点的指向，将头节点的next指向新节点
+ */
+void addFront(LinkList *list ,int num){
+    //先将新节点分配出来
+    LinkList* node = (LinkList*)malloc(sizeof(LinkList));
+    node->data=num;
+    node->next = list->next;
+    list->next = node;
+}
+
 void main(void){
     LinkList * list = create(3);
+    addFront(list,1);
+    addRear(list,10);
     print(list);
 }
