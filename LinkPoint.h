@@ -32,5 +32,5 @@ int remote(LinkList *list ,int index);//移除下标,并返回内容
 void addIndex(LinkList *list ,int num,int index);//在特定下标添加节点
 LinkList * copyList(LinkList *list);//拷贝链表并返回一个链表
 void print(LinkList *list);//输出链表内容
-
+int length(LinkList *list);//计算链表的长度，不算头节点，从第一个有效节点算起
 #endif //CORC___LINKPOINT_H

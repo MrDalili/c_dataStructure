@@ -10,6 +10,13 @@
  * 初始一个除了头节点算长度的链表，并赋值
  */
 LinkList * create(int length){
+    if (length == 0){
+        //需要一个空链表
+        LinkList * node, * first ,* end;//定义头节点和普通节点
+        first = (LinkList*)malloc(sizeof(LinkList));
+        first->next = NULL;
+        first->data = NULL;
+    }
     LinkList * node, * first ,* end;//定义头节点和普通节点
     first = (LinkList*)malloc(sizeof(LinkList));
     end = first;
@@ -30,9 +37,15 @@ LinkList * create(int length){
  * 打印链表中的元素
  */
 void print(LinkList *list){
-    list = list->next;
-    //看看是不是空链表,是的话直接输出空括号
+
+    //如果一开始就是空链表的话
     if (list == NULL){
+        return;
+    }
+    LinkList * node;
+    node = list->next;
+    //看看是不是空链表,是的话直接输出空括号
+    if (node == NULL){
         printf("[]\n");
         return ;
     }
@@ -40,15 +53,15 @@ void print(LinkList *list){
     printf("[");
     while (1){
         //我就看看是不是最后一个节点
-        LinkList * node = list->next;//往后面走一个
-        if(node == NULL){
+        LinkList * last = node->next;//往后面走一个
+        if(last == NULL){
             //最后一个节点
-            printf("%d]\n",list->data);
+            printf("%d]\n",node->data);
             break;
         } else{
             //后面的节点不空那就不是最后一点节点
-            printf("%d,",list->data);
-            list = node;
+            printf("%d,",node->data);
+            node = last;
         }
     }
 }
@@ -107,20 +120,71 @@ int remote(LinkList *list ,int index){
     return cur->data;
 }
 
+/**
+ * 找到对应节点的位置添加即可,前插
+ */
+void addIndex(LinkList *list ,int num,int index){
+    LinkList * node,* cur,* pre ;
+    node = (LinkList*)malloc(sizeof(LinkList));
+    node->data = num;
+    //找2个节点，一个是cur，一个是pre
+    cur = list->next;
+    pre = list;
+    //遍历到index的位置
+    for (int i = 0; i < index; i++) {
+        if (cur == NULL){
+            return;
+        }
+        pre = cur;
+        cur = cur->next;
+    }
+    node->next = pre->next;
+    pre->next = node;
+}
+
+/**
+ * 复制一个长得一摸一样的链表,那就是从头开始就好了
+ */
+LinkList * copyList(LinkList *list){
+    LinkList * copyList = create(0);//返回一个头指针
+    LinkList *cur,*copyCur,*node;//一个指向要拷贝的链表的头节点，一个指向要复制的链表，一个拟定为新的节点
+    node = (LinkList*)malloc(sizeof(LinkList));
+    cur = list->next;//指向下一个
+    copyCur = copyList;//新List的当前节点
+    //当cur指向空的时候，表明已经到末尾节点了
+    while(cur != NULL){
+        //如果不为空，那就直接往需要加长度的链表尾端加一个元素就好了
+        node->data = cur->data;//把要赋值的内容放在新节点里面
+        copyCur->next = node;//上一个节点指向新节点
+        cur = cur->next;//指向下一个节点
+        copyCur = node;//指向下一个节点
+    }
+    //到这里说明cur已经到最后一个节点后面的那个NULL节点了，但是copyCur指向的为最后一个节点，最后一个节点指向一个不知道的内存，需要设为NULL
+    node->next = NULL;
+    //返回复制的链表
+    return copyList;
+}
+/**
+ * 从第二个节点开始便利，遍历到NULL节点即可
+ */
+int lengthOfList(LinkList *list){
+    int length = 0;//先初始化长度为0
+    LinkList * cur = list->next;//指向第一个有效元素
+    while(cur != NULL){
+        length++;
+        cur = cur->next;
+    }
+    //返回长度
+    return length;
+}
+
 void main(void){
     LinkList * list = create(3);
-    addFront(list,1);
-    addRear(list,10);
     print(list);
-    remote(list,0);
+    addIndex(list,100,2);
     print(list);
-    remote(list,3);
-    print(list);
-    remote(list,1);
-    print(list);
-    remote(list,0);
-    remote(list,0);
-    print(list);
-    remote(list,0);
-    print(list);
+    int length = lengthOfList(list);
+    printf("%d\n",length);
+    LinkList * new = copyList(list);
+    print(new);
 }
