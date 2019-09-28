@@ -179,6 +179,15 @@ int lengthOfList(LinkList *list){
     return length;
 }
 
+//先新建一个节点，然后把值放进去
+LinkList * createNode(int data){
+    //新建一个节点
+    LinkList * node = (LinkList*)malloc(sizeof(LinkList));
+    node->next = NULL;
+    node->data = data;
+    return node;
+}
+
 void main(void){
     LinkList * list = create(3);
     print(list);
