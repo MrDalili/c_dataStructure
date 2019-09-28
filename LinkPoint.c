@@ -11,7 +11,7 @@
  */
 LinkList * create(int length){
     if (length == 0){
-        //需要一个空链表
+        //需要一个空链表,或者是一个新节点
         LinkList * node, * first ,* end;//定义头节点和普通节点
         first = (LinkList*)malloc(sizeof(LinkList));
         first->next = NULL;
@@ -148,16 +148,17 @@ void addIndex(LinkList *list ,int num,int index){
 LinkList * copyList(LinkList *list){
     LinkList * copyList = create(0);//返回一个头指针
     LinkList *cur,*copyCur,*node;//一个指向要拷贝的链表的头节点，一个指向要复制的链表，一个拟定为新的节点
-    node = (LinkList*)malloc(sizeof(LinkList));
+
     cur = list->next;//指向下一个
     copyCur = copyList;//新List的当前节点
     //当cur指向空的时候，表明已经到末尾节点了
     while(cur != NULL){
+        node = (LinkList*)malloc(sizeof(LinkList));
         //如果不为空，那就直接往需要加长度的链表尾端加一个元素就好了
         node->data = cur->data;//把要赋值的内容放在新节点里面
         copyCur->next = node;//上一个节点指向新节点
         cur = cur->next;//指向下一个节点
-        copyCur = node;//指向下一个节点
+        copyCur = copyCur->next;//指向下一个节点
     }
     //到这里说明cur已经到最后一个节点后面的那个NULL节点了，但是copyCur指向的为最后一个节点，最后一个节点指向一个不知道的内存，需要设为NULL
     node->next = NULL;
